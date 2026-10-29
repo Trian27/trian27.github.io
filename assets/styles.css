@@ -1,15 +1,16 @@
 :root {
-  color-scheme: light;
-  --color-text: #292d32;
-  --color-muted: #626871;
-  --color-accent: #8b2335;
-  --color-accent-hover: #621728;
-  --color-accent-soft: #d6a3ac;
-  --color-accent-pale: #dcb9bf;
-  --color-edge: #c9ccd1;
-  --color-node: #9a9fa6;
-  --color-rule: #e5e6e8;
-  --color-wash: #f8f5f6;
+  color-scheme: dark;
+  --color-background: #08130f;
+  --color-text: #e6eee8;
+  --color-muted: #a6b9ae;
+  --color-accent: #b7cfb5;
+  --color-accent-hover: #e1efdf;
+  --color-accent-soft: #88a88b;
+  --color-accent-pale: #526c5d;
+  --color-edge: #526c5d;
+  --color-node: #8da497;
+  --color-rule: #263d31;
+  --color-wash: #101f18;
   --content-width: 1056px;
   --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   --font-heading: Georgia, "Times New Roman", serif;
@@ -28,7 +29,7 @@ html { scroll-padding-top: calc(var(--header-h) + 1.5rem); }
 body {
   margin: 0;
   padding-top: var(--header-full);
-  background: #fff;
+  background: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-body);
   font-size: 1rem;
@@ -73,7 +74,7 @@ h3 { font-size: 1.03rem; font-weight: 600; line-height: 1.5; }
   left: 1rem;
   z-index: 20;
   padding: 0.5rem 1rem;
-  background: #fff;
+  background: var(--color-background);
   border: 2px solid var(--color-accent);
   transform: translateY(-200%);
 }
@@ -85,7 +86,7 @@ h3 { font-size: 1.03rem; font-weight: 600; line-height: 1.5; }
   width: 1.9rem;
   height: 1.9rem;
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-background);
   font-family: var(--font-heading);
   font-size: 0.85rem;
   font-weight: 500;
@@ -93,9 +94,9 @@ h3 { font-size: 1.03rem; font-weight: 600; line-height: 1.5; }
 }
 
 /* Navigation tree. The header is fixed so it can fold into a shorter tree while scrolling without shifting the page;
-   a short white fade under it softens text passing beneath. assets/tree-nav.js draws the edges and nodes. */
-.tree-header { position: fixed; top: 0; right: 0; left: 0; z-index: 10; background: #fff; }
-.tree-header::after { content: ""; position: absolute; top: 100%; right: 0; left: 0; height: 14px; background: linear-gradient(#fff, rgba(255, 255, 255, 0)); pointer-events: none; }
+   a short background fade under it softens text passing beneath. assets/tree-nav.js draws the edges and nodes. */
+.tree-header { position: fixed; top: 0; right: 0; left: 0; z-index: 10; background: var(--color-background); }
+.tree-header::after { content: ""; position: absolute; top: 100%; right: 0; left: 0; height: 14px; background: linear-gradient(var(--color-background), transparent); pointer-events: none; }
 .tree-nav {
   position: relative;
   max-width: var(--content-width);
@@ -151,7 +152,7 @@ h3 { font-size: 1.03rem; font-weight: 600; line-height: 1.5; }
 .nav-edge { fill: none; stroke: var(--color-edge); stroke-width: 1.2; transition: stroke 0.25s; }
 .nav-edge.is-hover { stroke: var(--color-accent-soft); stroke-width: 1.8; }
 .nav-edge.is-active { stroke: var(--color-accent); stroke-width: 2.2; }
-.nav-node { fill: #fff; stroke: var(--color-node); stroke-width: 1.4; transition: fill 0.25s, stroke 0.25s; }
+.nav-node { fill: var(--color-background); stroke: var(--color-node); stroke-width: 1.4; transition: fill 0.25s, stroke 0.25s; }
 .nav-node.is-hover { stroke: var(--color-accent); }
 .nav-node.is-active { fill: var(--color-accent); stroke: var(--color-accent); }
 .nav-node.is-terminal { fill: var(--color-wash); stroke: var(--color-accent); }
@@ -227,7 +228,7 @@ main { min-width: 0; overflow-wrap: anywhere; }
   stroke-dashoffset: 1;
   animation: simplex-draw 3.2s cubic-bezier(0.3, 0.1, 0.2, 1) 0.2s forwards;
 }
-.simplex-start { fill: #fff; stroke: var(--color-accent); stroke-width: 1; }
+.simplex-start { fill: var(--color-background); stroke: var(--color-accent); stroke-width: 1; }
 .simplex-eq { fill: var(--color-accent); opacity: 0; animation: simplex-fade 0.5s ease 3.1s forwards; }
 @keyframes simplex-draw { to { stroke-dashoffset: 0; } }
 @keyframes simplex-fade { to { opacity: 1; } }
@@ -321,6 +322,15 @@ main { min-width: 0; overflow-wrap: anywhere; }
 }
 
 @media print {
+  :root {
+    color-scheme: light;
+    --color-background: #fff;
+    --color-text: #292d32;
+    --color-muted: #626871;
+    --color-accent: #31573c;
+    --color-rule: #dbe3dd;
+    --color-wash: #f1f5f2;
+  }
   body { padding-top: 0; font-size: 10pt; }
   .tree-header, .skip-link, .site-footer, .about-figures { display: none; }
   .page-layout { display: block; margin: 0; }
