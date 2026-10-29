@@ -1,0 +1,9 @@
+.DS_Store
+.env
+.env.*
+__pycache__/
+artifacts/
+node_modules/
+.venv/
+docs/superpowers/
+!.env.example
