@@ -1,6 +1,6 @@
 # Tri-An Nguyen's academic website
 
-A static academic profile emphasizing graduate study in economics and computer science (EconCS), theoretical research, and experimental/empirical work. Built using the supplied research résumé and portrait, with an academic layout inspired by [Xintong Wang's homepage](https://xintongemilywang.github.io/).
+A static academic profile for research in economics and computer science (EconCS). Built using the supplied research résumé and portrait, with an academic layout inspired by [Xintong Wang's homepage](https://xintongemilywang.github.io/).
 
 The public site is [trian27.github.io](https://trian27.github.io/), hosted by GitHub Pages from the root of the `main` branch in [Trian27/trian27.github.io](https://github.com/Trian27/trian27.github.io).
 
@@ -21,7 +21,7 @@ Visit `http://127.0.0.1:8000/`. Stop the server with Ctrl+C.
 All text on the page is in `index.html`, in page order:
 
 - Sidebar (`<aside class="profile">`): name, field, affiliation, contact links, research interests.
-- About (`id="about"`): the bio, the learning-dynamics caption, the mixed-strategy formula, and the EconCS statement.
+- About (`id="about"`): the bio and the learning-dynamics caption.
 - Recent updates: one `<li>` per update, newest first, with a `<time datetime="YYYY-MM">` date.
 - Research (`id="research"`): Ongoing work (project, then "with" and names) and Papers (title, authors, venue, and an arXiv link or a locally hosted PDF).
 - Selected honors (`id="honors"`) and Community (`id="community"`).

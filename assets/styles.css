@@ -6,7 +6,6 @@
   --color-accent: #b7cfb5;
   --color-accent-hover: #e1efdf;
   --color-accent-soft: #88a88b;
-  --color-accent-pale: #526c5d;
   --color-edge: #526c5d;
   --color-node: #8da497;
   --color-rule: #263d31;
@@ -202,15 +201,6 @@ main { min-width: 0; overflow-wrap: anywhere; }
 .about-main p:last-child { margin-bottom: 0; }
 .about-figures { flex: 0 0 200px; margin-top: 0.45rem; }
 .about-figures > * + * { margin-top: 1.6rem; }
-.research-statement {
-  margin-top: 1.5rem;
-  padding: 1.1rem 1.35rem;
-  border-left: 3px solid var(--color-accent);
-  background: var(--color-wash);
-  border-radius: 0 3px 3px 0;
-}
-.research-statement p { margin: 0; font-size: 0.96rem; line-height: 1.8; text-align: justify; text-wrap: pretty; }
-.research-statement strong { color: var(--color-accent); }
 
 /* Learning dynamics: replicator path on the strategy simplex, drawn by assets/learning-dynamics.js. */
 .dynamics-figure { margin: 0; }
@@ -232,12 +222,6 @@ main { min-width: 0; overflow-wrap: anywhere; }
 .simplex-eq { fill: var(--color-accent); opacity: 0; animation: simplex-fade 0.5s ease 3.1s forwards; }
 @keyframes simplex-draw { to { stroke-dashoffset: 0; } }
 @keyframes simplex-fade { to { opacity: 1; } }
-
-/* Mixed strategy: the theory/empirical split as a two-tone bar. */
-.mixed-formula { margin: 0 0 0.5rem; font-family: var(--font-heading); font-size: 0.95rem; }
-.mixed-bar { display: flex; height: 5px; border-radius: 3px; overflow: hidden; }
-.mixed-bar span { flex: 1; background: var(--color-accent); }
-.mixed-bar span + span { background: var(--color-accent-pale); }
 
 .updates { list-style: none; margin: 0; padding: 0; }
 .updates li { display: grid; grid-template-columns: 5.2rem minmax(0, 1fr); gap: 1.2rem; margin-bottom: 0.8rem; font-size: 0.925rem; }
@@ -293,7 +277,6 @@ main { min-width: 0; overflow-wrap: anywhere; }
   .about-figures { display: flex; flex: none; flex-wrap: wrap; align-self: stretch; align-items: center; gap: 1.2rem 1.6rem; margin-top: 0; }
   .about-figures > * + * { margin-top: 0; }
   .dynamics-figure { flex: 0 0 170px; }
-  .strategy-figure { flex: 1 1 12rem; }
 }
 
 /* On short windows the sidebar scrolls with the page instead of staying put. */
@@ -316,7 +299,6 @@ main { min-width: 0; overflow-wrap: anywhere; }
   .sidebar-note { display: none; }
   .content-section { margin-bottom: 2.6rem; }
   h2 { font-size: 1.65rem; }
-  .research-statement { padding: 1rem 1.1rem; }
   .updates li { grid-template-columns: minmax(0, 1fr); gap: 0.15rem; margin-bottom: 1.1rem; }
   .site-footer { padding-bottom: 2rem; }
 }
