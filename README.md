@@ -33,7 +33,7 @@ Other files:
 - `assets/styles.css`: typography, colors, and responsive layout.
 - `assets/tree-nav.js`: draws the navigation tree and highlights the section in view. Add or rename a section by editing the links in the header `<ul>`; the tree follows.
 - `assets/learning-dynamics.js`: draws the rock–paper–scissors simplex. Its caption is in `index.html`.
-- `assets/profile.jpg`, `assets/Tri-An_Nguyen_Resume_Research.pdf`, `assets/ANL_2025_Certificate.pdf`, `assets/favicon.svg`: portrait, CV, ANL 2025 award certificate, and icon.
+- `assets/profile.jpg`, `assets/Tri-An_Nguyen_CV.pdf`, `assets/ANL_2025_Certificate.pdf`, `assets/favicon.svg`: portrait, CV, ANL 2025 award certificate, and icon.
 - `assets/scalable-opponent-strategy-estimation.pdf`: non-anonymous preprint of the TheWebConf 2027 submission, hosted here until it is on arXiv. It is built locally from the Overleaf source with `nonacm` and author affiliations; overwrite this file to update it, and replace the link with arXiv once posted.
 
 The site uses system fonts and no analytics or external runtime dependencies. JavaScript only enhances the page: without it, every link and all text still work, the tree's edges are not drawn, and the learning-dynamics figure stays hidden. Research summaries and dates come from the supplied résumé. Public GitHub links were checked against [Trian27](https://github.com/Trian27); negotiation links come from the reference homepage. The robotics project is described as **submitted to ICRA 2027**, without claiming acceptance.
@@ -55,6 +55,6 @@ The layout check needs Node 20.12 or newer and a local Chrome. Copy `.env.exampl
 
 GitHub Pages publishes from `main` and `/(root)`, with no custom deployment workflow. The empty `.nojekyll` file bypasses Jekyll processing. Validate changes, commit them, and push to `origin main` to update the site. GitHub's [publishing-source documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) describes this setup.
 
-To update the CV, replace `assets/Tri-An_Nguyen_Resume_Research.pdf`, keeping the same filename, then commit and push that file. All existing CV links will continue to work.
+To update the CV, copy the `Tri-An_Nguyen_CV.pdf` built by the CV project over `assets/Tri-An_Nguyen_CV.pdf`, keeping the same filename, then commit and push that file. All existing CV links will continue to work.
 
 `.env`, the virtual environment, preview screenshots, and local design notes are ignored by Git.
