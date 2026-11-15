@@ -23,7 +23,7 @@ All text on the page is in `index.html`, in page order:
 - Sidebar (`<aside class="profile">`): name, field, affiliation, contact links, research interests.
 - About (`id="about"`): the bio, the learning-dynamics caption, the mixed-strategy formula, and the EconCS statement.
 - Recent updates: one `<li>` per update, newest first, with a `<time datetime="YYYY-MM">` date.
-- Research (`id="research"`): Ongoing work (project, then "with" and names) and Papers (title, authors, venue, arXiv link).
+- Research (`id="research"`): Ongoing work (project, then "with" and names) and Papers (title, authors, venue, and an arXiv link or a locally hosted PDF).
 - Selected honors (`id="honors"`) and Community (`id="community"`).
 
 Text still to be supplied is wrapped in `<span class="fill-in">…</span>`, which shows a dashed outline. Replace the whole span with the real text or link. `python3 scripts/check_site.py` lists what is left.
@@ -34,6 +34,7 @@ Other files:
 - `assets/tree-nav.js`: draws the navigation tree and highlights the section in view. Add or rename a section by editing the links in the header `<ul>`; the tree follows.
 - `assets/learning-dynamics.js`: draws the rock–paper–scissors simplex. Its caption is in `index.html`.
 - `assets/profile.jpg`, `assets/Tri-An_Nguyen_Resume_Research.pdf`, `assets/ANL_2025_Certificate.pdf`, `assets/favicon.svg`: portrait, CV, ANL 2025 award certificate, and icon.
+- `assets/scalable-opponent-strategy-estimation.pdf`: non-anonymous preprint of the TheWebConf 2027 submission, hosted here until it is on arXiv. It is built locally from the Overleaf source with `nonacm` and author affiliations; overwrite this file to update it, and replace the link with arXiv once posted.
 
 The site uses system fonts and no analytics or external runtime dependencies. JavaScript only enhances the page: without it, every link and all text still work, the tree's edges are not drawn, and the learning-dynamics figure stays hidden. Research summaries and dates come from the supplied résumé. Public GitHub links were checked against [Trian27](https://github.com/Trian27); negotiation links come from the reference homepage. The robotics project is described as **submitted to ICRA 2027**, without claiming acceptance.
 
