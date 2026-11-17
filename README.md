@@ -24,7 +24,7 @@ All text on the page is in `index.html`, in page order:
 - About (`id="about"`): the bio and the learning-dynamics caption.
 - Recent updates: one `<li>` per update, newest first, with a `<time datetime="YYYY-MM">` date.
 - Research (`id="research"`): Ongoing work (project, then "with" and names) and Papers (title, authors, venue, and an arXiv link or a locally hosted PDF).
-- Selected honors (`id="honors"`) and Community (`id="community"`).
+- Selected honors and awards (`id="honors"`) and Community (`id="community"`).
 
 Text still to be supplied is wrapped in `<span class="fill-in">…</span>`, which shows a dashed outline. Replace the whole span with the real text or link. `python3 scripts/check_site.py` lists what is left.
 
