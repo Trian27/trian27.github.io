@@ -168,9 +168,14 @@ h3 { font-size: 1.03rem; font-weight: 600; line-height: 1.5; }
   margin: 2.6rem auto 0;
 }
 
-/* On tall windows the sidebar stays in view under the folded header; a 5:4 portrait crop and tight spacing keep it
-   short enough to fit. Shorter windows let it scroll with the page (see the max-height query below). */
-.profile { position: sticky; top: calc(var(--header-h) + 1.6rem); padding-bottom: 1rem; }
+/* The sidebar stays in view under the folded header; a 5:4 portrait crop and tight spacing keep it short enough to
+   fit whole on tall windows. Shorter windows scroll its lower part inside it (see the screen query below). */
+.profile {
+  --profile-top: calc(var(--header-h) + 1.6rem);
+  position: sticky;
+  top: var(--profile-top);
+  padding-bottom: 1rem;
+}
 .portrait {
   display: block;
   width: 100%;
@@ -274,10 +279,18 @@ main { min-width: 0; overflow-wrap: anywhere; }
   .page-layout { grid-template-columns: 200px minmax(0, 1fr); gap: 2.5rem; }
 }
 
-/* Windows too short for the whole sidebar, including the learning-dynamics figure, let it scroll with the page
-   instead of staying put. Its stuck bottom edge sits near 1255px. */
-@media (min-width: 661px) and (max-height: 1275px) {
-  .profile { position: static; }
+/* Desktop windows too short for the whole stuck sidebar (its bottom edge sits near 1255px) scroll the rest of it,
+   down to the learning-dynamics figure, inside the sidebar. The inline padding, cancelled by an equal negative margin,
+   leaves room for link focus rings (2px outline at a 5px offset) that the scroll container would otherwise clip. */
+@media screen and (min-width: 661px) {
+  .profile {
+    --focus-ring-room: 8px;
+    max-height: calc(100vh - var(--profile-top));
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-inline: var(--focus-ring-room);
+    margin-inline: calc(-1 * var(--focus-ring-room));
+  }
 }
 
 /* Phones: the header scrolls away with the page, so nothing passes under it and it needs no fade. */

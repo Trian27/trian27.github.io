@@ -1,6 +1,7 @@
 // Browser check for the site's layout and behavior. Loads index.html from disk in headless Chrome through the
 // DevTools protocol and verifies the approved design: the navigation tree's geometry, the highlighted branch and the
-// header fold, a sidebar that stays in view on tall windows and scrolls on shorter ones, the sidebar figure, the phone layout, and the page with
+// header fold, a sidebar that stays in view on every desktop window (scrolling inside itself when the window is too short
+// to show all of it), the sidebar figure, the phone layout, and the page with
 // JavaScript disabled. Prints one PASS/FAIL line per behavior and exits non-zero on any failure.
 //
 // Usage: node scripts/check_layout.mjs   (needs CHROME_PATH in .env; see .env.example)
@@ -16,7 +17,7 @@ const PAGE_URL = pathToFileURL(join(ROOT, "index.html")).href;
 
 const DESKTOP = { width: 1440, height: 900, mobile: false };
 const SHORT_WINDOW = { width: 1280, height: 720, mobile: false };
-// Taller than the 1275px below which the sidebar scrolls with the page (see assets/styles.css).
+// Tall enough to show the whole sidebar without it scrolling inside itself.
 const TALL_WINDOW = { width: 1440, height: 1320, mobile: false };
 const PHONE = { width: 390, height: 844, mobile: true };
 // The narrowest phones still in use.
@@ -67,7 +68,10 @@ const MEASURE = `(() => {
     compact: document.documentElement.classList.contains("is-compact"),
     headerHeight: header.offsetHeight,
     headerPosition: getComputedStyle(header).position,
+    headerBottom: header.getBoundingClientRect().bottom,
     profilePosition: getComputedStyle(found.profile).position,
+    profileScrolls: found.profile.scrollHeight > found.profile.clientHeight
+      && getComputedStyle(found.profile).overflowY === "auto",
     profile: box(found.profile),
     aboutHeading: box(found.aboutHeading),
     aboutText: box(found.aboutText),
@@ -270,8 +274,7 @@ async function checkDesktop(cdp) {
   const stuck = await measureAfter(cdp, "desktop", `window.scrollTo(0, ${STUCK_SCROLL})`);
   check("header folds after scrolling", stuck.compact && stuck.headerHeight < top.headerHeight,
     `compact ${stuck.compact}, ${top.headerHeight}px → ${stuck.headerHeight}px`);
-  check("sidebar scrolls with the page in a 900px window", stuck.profilePosition === "static",
-    `position ${stuck.profilePosition}`);
+  await checkSidebarInView(cdp, stuck, "a 900px window");
 
   const atResearch = await measureAfter(cdp, "desktop", `document.getElementById("research").scrollIntoView()`);
   check("Research is highlighted when in view", atResearch.active === "Research", `active ${atResearch.active}`);
@@ -279,21 +282,34 @@ async function checkDesktop(cdp) {
   check("Community is highlighted at the bottom", atBottom.active === "Community", `active ${atBottom.active}`);
 }
 
+/** Checks that a scrolled-down desktop page keeps the sidebar stuck under the header and fully on screen, and that
+ *  scrolling inside the sidebar brings its learning-dynamics figure into view. */
+async function checkSidebarInView(cdp, stuck, window) {
+  check(`sidebar stays in view under the header in ${window}`,
+    stuck.profilePosition === "sticky" && stuck.profile.top >= stuck.headerBottom - TOLERANCE
+      && stuck.profile.bottom <= stuck.viewport.height + TOLERANCE,
+    `position ${stuck.profilePosition}, sidebar ${stuck.profile.top}-${stuck.profile.bottom}, header bottom ${stuck.headerBottom}`);
+  const scrolled = await measureAfter(cdp, window, `document.querySelector(".profile").scrollTop = 1e6`);
+  if (!scrolled) return;
+  check(`scrolling the sidebar reveals its figure in ${window}`,
+    stuck.profileScrolls && scrolled.figure.bottom <= scrolled.profile.bottom + TOLERANCE,
+    `sidebar scrolls ${stuck.profileScrolls}, figure bottom ${scrolled.figure.bottom}, sidebar bottom ${scrolled.profile.bottom}`);
+}
+
 async function checkShortWindow(cdp) {
   await open(cdp, SHORT_WINDOW);
   const stuck = await measureAfter(cdp, "short window", `window.scrollTo(0, ${STUCK_SCROLL})`);
-  if (!stuck) return;
-  check("sidebar scrolls with the page in a 720px window", stuck.profilePosition === "static",
-    `position ${stuck.profilePosition}`);
+  if (stuck) await checkSidebarInView(cdp, stuck, "a 720px window");
 }
 
 async function checkTallWindow(cdp) {
   await open(cdp, TALL_WINDOW);
   const stuck = await measureAfter(cdp, "tall window", `window.scrollTo(0, ${STUCK_SCROLL})`);
   if (!stuck) return;
-  check("sidebar stays in view and fits in a 1320px window",
-    stuck.profilePosition === "sticky" && stuck.profile.top >= 0 && stuck.profile.bottom <= stuck.viewport.height,
-    `position ${stuck.profilePosition}, sidebar ${stuck.profile.top}-${stuck.profile.bottom}`);
+  check("sidebar stays in view and fits without scrolling in a 1320px window",
+    stuck.profilePosition === "sticky" && !stuck.profileScrolls && stuck.profile.top >= 0
+      && stuck.profile.bottom <= stuck.viewport.height,
+    `position ${stuck.profilePosition}, scrolls ${stuck.profileScrolls}, sidebar ${stuck.profile.top}-${stuck.profile.bottom}`);
 }
 
 /** Checks that the navigation labels in a phone measurement keep at least MIN_LABEL_GAP between neighbors. */
