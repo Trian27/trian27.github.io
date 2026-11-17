@@ -27,7 +27,7 @@ const SETTLE_MS = 400;
 const STARTUP_TIMEOUT_MS = 10000;
 // Chrome helpers can finish writing the profile after the main process exits.
 const PROFILE_CLEANUP_RETRIES = 3;
-const NAV_LEAVES = ["About", "Research", "Honors", "Community", "CV"];
+const NAV_LEAVES = ["About", "Research", "Honors & Awards", "Community", "CV"];
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const near = (a, b) => Math.abs(a - b) <= TOLERANCE;
