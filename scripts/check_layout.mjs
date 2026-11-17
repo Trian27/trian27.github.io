@@ -302,6 +302,9 @@ async function checkPhone(cdp) {
   check("figure follows the research interests on phones, no wider than the desktop sidebar",
     phone.figure.width > 0 && phone.figure.top >= phone.interests.bottom && phone.figure.width <= DESKTOP_SIDEBAR_WIDTH + TOLERANCE,
     `figure ${phone.figure.width}px wide at ${phone.figure.top}, interests bottom ${phone.interests.bottom}`);
+  const overlaps = phone.labels.slice(1).filter((label, i) => label.left < phone.labels[i].right)
+    .map(label => label.text);
+  check("navigation labels do not overlap on phones", overlaps.length === 0, `overlapping: ${overlaps.join(", ")}`);
   check("no horizontal overflow on phones", phone.pageWidth <= phone.viewport.width, `page ${phone.pageWidth}px`);
 }
 

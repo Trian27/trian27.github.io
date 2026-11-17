@@ -31,7 +31,7 @@ Text still to be supplied is wrapped in `<span class="fill-in">…</span>`, whic
 Other files:
 
 - `assets/styles.css`: typography, colors, and responsive layout.
-- `assets/tree-nav.js`: draws the navigation tree and highlights the section in view. Add or rename a section by editing the links in the header `<ul>`; the tree follows.
+- `assets/tree-nav.js`: draws the navigation tree and highlights the section in view. Add or rename a section by editing the links in the header `<ul>`; the tree follows. Text in a label wrapped in `<span class="nav-extra">` is hidden on phones, so "Honors & Awards" shows as "Honors" there.
 - `assets/learning-dynamics.js`: draws the rock–paper–scissors simplex. Its caption is in `index.html`.
 - `assets/profile.jpg`, `assets/Tri-An_Nguyen_CV.pdf`, `assets/ANL_2025_Certificate.pdf`, `assets/favicon.svg`: portrait, CV, ANL 2025 award certificate, and icon.
 - `assets/anl2025-rufl-slides.pdf`: PDF export of the ANL 2025 RUFL talk slides (the same deck ANAC hosts as `.pptx`), so the CV can link slides that open in a browser.
