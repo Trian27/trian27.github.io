@@ -1,6 +1,6 @@
 // Browser check for the site's layout and behavior. Loads index.html from disk in headless Chrome through the
 // DevTools protocol and verifies the approved design: the navigation tree's geometry, the highlighted branch and the
-// header fold, a sidebar that fits without scrolling, the About figures, the phone layout, and the page with
+// header fold, a sidebar that stays in view on tall windows and scrolls on shorter ones, the sidebar figure, the phone layout, and the page with
 // JavaScript disabled. Prints one PASS/FAIL line per behavior and exits non-zero on any failure.
 //
 // Usage: node scripts/check_layout.mjs   (needs CHROME_PATH in .env; see .env.example)
@@ -16,6 +16,8 @@ const PAGE_URL = pathToFileURL(join(ROOT, "index.html")).href;
 
 const DESKTOP = { width: 1440, height: 900, mobile: false };
 const SHORT_WINDOW = { width: 1280, height: 720, mobile: false };
+// Taller than the 1040px below which the sidebar scrolls with the page (see assets/styles.css).
+const TALL_WINDOW = { width: 1440, height: 1100, mobile: false };
 const PHONE = { width: 390, height: 844, mobile: true };
 // Alignment tolerance in CSS pixels.
 const TOLERANCE = 1.5;
@@ -35,7 +37,7 @@ const center = box => box.left + box.width / 2;
 const MEASURE = `(() => {
   const required = {
     header: ".tree-header", nav: ".tree-nav", gap: ".name-gap", profile: ".profile", aboutHeading: "#about-heading",
-    aboutBody: ".about-body", aboutText: ".about-main p:last-of-type", figures: ".about-figures", dynamics: "[data-learning-dynamics]",
+    aboutText: ".about-main p:last-of-type", interests: ".sidebar-note > p:last-of-type", dynamics: "[data-learning-dynamics]",
   };
   const found = Object.fromEntries(Object.entries(required).map(([key, selector]) => [key, document.querySelector(selector)]));
   const missing = Object.keys(required).filter(key => !found[key]).map(key => required[key]);
@@ -59,11 +61,12 @@ const MEASURE = `(() => {
     compact: document.documentElement.classList.contains("is-compact"),
     headerHeight: header.offsetHeight,
     headerPosition: getComputedStyle(header).position,
+    profilePosition: getComputedStyle(found.profile).position,
     profile: box(found.profile),
     aboutHeading: box(found.aboutHeading),
-    aboutBody: box(found.aboutBody),
     aboutText: box(found.aboutText),
-    figures: box(found.figures),
+    interests: box(found.interests),
+    figure: box(found.dynamics),
     simplex: box(document.querySelector(".simplex")),
     simplexPoints: document.querySelector(".simplex-path")?.getAttribute("d").split("L").length ?? 0,
     dynamicsHidden: found.dynamics.hidden,
@@ -252,18 +255,17 @@ async function checkDesktop(cdp) {
   check("About is highlighted at the top of the page", top.active === "About", `active ${top.active}`);
   check("learning-dynamics figure is drawn", top.dynamicsHidden === false && top.simplexPoints > 100,
     `hidden ${top.dynamicsHidden}, ${top.simplexPoints} points`);
-  const middle = box => (box.top + box.bottom) / 2;
-  check("figure column is centered vertically on the About section", near(middle(top.figures), middle(top.aboutBody)),
-    `figures ${middle(top.figures)}, section ${middle(top.aboutBody)}`);
-  check("figures sit beside the bio", top.figures.left > top.aboutText.right,
-    `figures ${top.figures.left}, text ${top.aboutText.right}`);
+  check("figure sits under the research interests in the sidebar",
+    top.figure.top >= top.interests.bottom && top.figure.left >= top.profile.left - TOLERANCE
+      && top.figure.right <= top.profile.right + TOLERANCE,
+    `figure ${top.figure.top}-${top.figure.right}, interests bottom ${top.interests.bottom}, sidebar right ${top.profile.right}`);
   check("no horizontal overflow on desktop", top.pageWidth <= top.viewport.width, `page ${top.pageWidth}px`);
 
   const stuck = await measureAfter(cdp, "desktop", `window.scrollTo(0, ${STUCK_SCROLL})`);
   check("header folds after scrolling", stuck.compact && stuck.headerHeight < top.headerHeight,
     `compact ${stuck.compact}, ${top.headerHeight}px → ${stuck.headerHeight}px`);
-  check("sidebar fits in a 900px window", stuck.profile.bottom <= stuck.viewport.height,
-    `sidebar bottom ${stuck.profile.bottom}`);
+  check("sidebar scrolls with the page in a 900px window", stuck.profilePosition === "static",
+    `position ${stuck.profilePosition}`);
 
   const atResearch = await measureAfter(cdp, "desktop", `document.getElementById("research").scrollIntoView()`);
   check("Research is highlighted when in view", atResearch.active === "Research", `active ${atResearch.active}`);
@@ -275,8 +277,17 @@ async function checkShortWindow(cdp) {
   await open(cdp, SHORT_WINDOW);
   const stuck = await measureAfter(cdp, "short window", `window.scrollTo(0, ${STUCK_SCROLL})`);
   if (!stuck) return;
-  check("sidebar fits in a 720px window", stuck.profile.bottom <= stuck.viewport.height,
-    `sidebar bottom ${stuck.profile.bottom}`);
+  check("sidebar scrolls with the page in a 720px window", stuck.profilePosition === "static",
+    `position ${stuck.profilePosition}`);
+}
+
+async function checkTallWindow(cdp) {
+  await open(cdp, TALL_WINDOW);
+  const stuck = await measureAfter(cdp, "tall window", `window.scrollTo(0, ${STUCK_SCROLL})`);
+  if (!stuck) return;
+  check("sidebar stays in view and fits in a 1100px window",
+    stuck.profilePosition === "sticky" && stuck.profile.top >= 0 && stuck.profile.bottom <= stuck.viewport.height,
+    `position ${stuck.profilePosition}, sidebar ${stuck.profile.top}-${stuck.profile.bottom}`);
 }
 
 async function checkPhone(cdp) {
@@ -286,8 +297,8 @@ async function checkPhone(cdp) {
   check("header scrolls away on phones", phone.headerPosition === "static", `position ${phone.headerPosition}`);
   check("root node sits under the name gap on phones", phone.rootX !== null && near(phone.rootX, center(phone.gap)),
     `root ${phone.rootX}, gap ${center(phone.gap)}`);
-  check("figures follow the bio on phones", phone.figures.top >= phone.aboutText.bottom,
-    `figures ${phone.figures.top}, text ${phone.aboutText.bottom}`);
+  check("figure is hidden with the research interests on phones", phone.figure.width === 0,
+    `figure width ${phone.figure.width}`);
   check("no horizontal overflow on phones", phone.pageWidth <= phone.viewport.width, `page ${phone.pageWidth}px`);
 }
 
@@ -308,6 +319,7 @@ async function main() {
     try {
       await checkDesktop(cdp);
       await checkShortWindow(cdp);
+      await checkTallWindow(cdp);
       await checkPhone(cdp);
       check("no console errors with JavaScript on", cdp.pageErrors.length === 0, cdp.pageErrors.join(" | "));
       await checkWithoutJavaScript(cdp);
