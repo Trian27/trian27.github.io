@@ -19,6 +19,10 @@ const SHORT_WINDOW = { width: 1280, height: 720, mobile: false };
 // Taller than the 1275px below which the sidebar scrolls with the page (see assets/styles.css).
 const TALL_WINDOW = { width: 1440, height: 1320, mobile: false };
 const PHONE = { width: 390, height: 844, mobile: true };
+// The narrowest phones still in use.
+const NARROW_PHONE = { width: 320, height: 640, mobile: true };
+// Smallest gap between navigation labels on phones, in CSS pixels.
+const MIN_LABEL_GAP = 8;
 // Sidebar column width on desktop (--sidebar-width in assets/styles.css); phones cap the figure at it.
 const DESKTOP_SIDEBAR_WIDTH = 252;
 // Alignment tolerance in CSS pixels.
@@ -292,6 +296,13 @@ async function checkTallWindow(cdp) {
     `position ${stuck.profilePosition}, sidebar ${stuck.profile.top}-${stuck.profile.bottom}`);
 }
 
+/** Checks that the navigation labels in a phone measurement keep at least MIN_LABEL_GAP between neighbors. */
+function checkLabelGaps(measured, device) {
+  const gaps = measured.labels.slice(1).map((label, i) => Math.round(label.left - measured.labels[i].right));
+  check(`navigation labels keep ${MIN_LABEL_GAP}px apart on ${device}`, Math.min(...gaps) >= MIN_LABEL_GAP,
+    `gaps ${gaps.join(", ")}`);
+}
+
 async function checkPhone(cdp) {
   await open(cdp, PHONE);
   const phone = await measurePage(cdp, "phone");
@@ -302,9 +313,10 @@ async function checkPhone(cdp) {
   check("figure follows the research interests on phones, no wider than the desktop sidebar",
     phone.figure.width > 0 && phone.figure.top >= phone.interests.bottom && phone.figure.width <= DESKTOP_SIDEBAR_WIDTH + TOLERANCE,
     `figure ${phone.figure.width}px wide at ${phone.figure.top}, interests bottom ${phone.interests.bottom}`);
-  const overlaps = phone.labels.slice(1).filter((label, i) => label.left < phone.labels[i].right)
-    .map(label => label.text);
-  check("navigation labels do not overlap on phones", overlaps.length === 0, `overlapping: ${overlaps.join(", ")}`);
+  checkLabelGaps(phone, "a 390px phone");
+  await open(cdp, NARROW_PHONE);
+  const narrow = await measurePage(cdp, "narrow phone");
+  if (narrow) checkLabelGaps(narrow, "a 320px phone");
   check("no horizontal overflow on phones", phone.pageWidth <= phone.viewport.width, `page ${phone.pageWidth}px`);
 }
 
