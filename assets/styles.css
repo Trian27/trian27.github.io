@@ -24,7 +24,8 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-padding-top: calc(var(--header-h) + 1.5rem); }
+/* Base text size; every rem in this file scales with it. 112.5% is 18px at the browser default of 16px. */
+html { font-size: 112.5%; scroll-padding-top: calc(var(--header-h) + 1.5rem); }
 
 body {
   margin: 0;
@@ -274,8 +275,8 @@ main { min-width: 0; overflow-wrap: anywhere; }
 }
 
 /* Windows too short for the whole sidebar, including the learning-dynamics figure, let it scroll with the page
-   instead of staying put. Its stuck bottom edge sits near 1017px. */
-@media (min-width: 661px) and (max-height: 1040px) {
+   instead of staying put. Its stuck bottom edge sits near 1091px. */
+@media (min-width: 661px) and (max-height: 1110px) {
   .profile { position: static; }
 }
 

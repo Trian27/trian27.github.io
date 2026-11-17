@@ -16,8 +16,8 @@ const PAGE_URL = pathToFileURL(join(ROOT, "index.html")).href;
 
 const DESKTOP = { width: 1440, height: 900, mobile: false };
 const SHORT_WINDOW = { width: 1280, height: 720, mobile: false };
-// Taller than the 1040px below which the sidebar scrolls with the page (see assets/styles.css).
-const TALL_WINDOW = { width: 1440, height: 1100, mobile: false };
+// Taller than the 1110px below which the sidebar scrolls with the page (see assets/styles.css).
+const TALL_WINDOW = { width: 1440, height: 1150, mobile: false };
 const PHONE = { width: 390, height: 844, mobile: true };
 // Sidebar column width on desktop (--sidebar-width in assets/styles.css); phones cap the figure at it.
 const DESKTOP_SIDEBAR_WIDTH = 252;
@@ -287,7 +287,7 @@ async function checkTallWindow(cdp) {
   await open(cdp, TALL_WINDOW);
   const stuck = await measureAfter(cdp, "tall window", `window.scrollTo(0, ${STUCK_SCROLL})`);
   if (!stuck) return;
-  check("sidebar stays in view and fits in a 1100px window",
+  check("sidebar stays in view and fits in a 1150px window",
     stuck.profilePosition === "sticky" && stuck.profile.top >= 0 && stuck.profile.bottom <= stuck.viewport.height,
     `position ${stuck.profilePosition}, sidebar ${stuck.profile.top}-${stuck.profile.bottom}`);
 }
