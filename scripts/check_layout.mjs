@@ -19,6 +19,8 @@ const SHORT_WINDOW = { width: 1280, height: 720, mobile: false };
 // Taller than the 1040px below which the sidebar scrolls with the page (see assets/styles.css).
 const TALL_WINDOW = { width: 1440, height: 1100, mobile: false };
 const PHONE = { width: 390, height: 844, mobile: true };
+// Sidebar column width on desktop (--sidebar-width in assets/styles.css); phones cap the figure at it.
+const DESKTOP_SIDEBAR_WIDTH = 252;
 // Alignment tolerance in CSS pixels.
 const TOLERANCE = 1.5;
 // Far enough down for the header to fold and the sidebar to stick.
@@ -297,8 +299,9 @@ async function checkPhone(cdp) {
   check("header scrolls away on phones", phone.headerPosition === "static", `position ${phone.headerPosition}`);
   check("root node sits under the name gap on phones", phone.rootX !== null && near(phone.rootX, center(phone.gap)),
     `root ${phone.rootX}, gap ${center(phone.gap)}`);
-  check("figure is hidden with the research interests on phones", phone.figure.width === 0,
-    `figure width ${phone.figure.width}`);
+  check("figure follows the research interests on phones, no wider than the desktop sidebar",
+    phone.figure.width > 0 && phone.figure.top >= phone.interests.bottom && phone.figure.width <= DESKTOP_SIDEBAR_WIDTH + TOLERANCE,
+    `figure ${phone.figure.width}px wide at ${phone.figure.top}, interests bottom ${phone.interests.bottom}`);
   check("no horizontal overflow on phones", phone.pageWidth <= phone.viewport.width, `page ${phone.pageWidth}px`);
 }
 
