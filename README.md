@@ -23,7 +23,7 @@ All text on the page is in `index.html`, in page order:
 - Sidebar (`<aside class="profile">`): name, field, affiliation, contact links, research interests.
 - About (`id="about"`): the bio and the learning-dynamics caption.
 - Recent updates: one `<li>` per update, newest first, with a `<time datetime="YYYY-MM">` date.
-- Research (`id="research"`): Ongoing work (project, then "with" and names), Papers (title, authors, venue, and a "Paper" link to arXiv or a locally hosted PDF), and Technical reports (the RUFL competition report, worded as on the CV, with Report, Slides, and Video presentation links).
+- Research (`id="research"`): Ongoing work (project, then "with" and names), Papers (title, authors, venue, and a "Paper" link to arXiv or a locally hosted PDF), and Technical reports (the RUFL competition report: its result and poster venue, then Report, Slides, and Video presentation links). Links after a venue are separated by " · ".
 - Selected honors and awards (`id="honors"`) and Community (`id="community"`).
 
 Text still to be supplied is wrapped in `<span class="fill-in">…</span>`, which shows a dashed outline. Replace the whole span with the real text or link. `python3 scripts/check_site.py` lists what is left.

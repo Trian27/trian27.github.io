@@ -19,8 +19,6 @@ const SHORT_WINDOW = { width: 1280, height: 720, mobile: false };
 const PHONE = { width: 390, height: 844, mobile: true };
 // Alignment tolerance in CSS pixels.
 const TOLERANCE = 1.5;
-// The figure's first glyph sits at the About heading's cap height, a few pixels below the heading box.
-const FIGURE_ALIGN_MAX = 12;
 // Far enough down for the header to fold and the sidebar to stick.
 const STUCK_SCROLL = 700;
 const SETTLE_MS = 400;
@@ -37,7 +35,7 @@ const center = box => box.left + box.width / 2;
 const MEASURE = `(() => {
   const required = {
     header: ".tree-header", nav: ".tree-nav", gap: ".name-gap", profile: ".profile", aboutHeading: "#about-heading",
-    aboutText: ".about-main p:last-of-type", figures: ".about-figures", dynamics: "[data-learning-dynamics]",
+    aboutBody: ".about-body", aboutText: ".about-main p:last-of-type", figures: ".about-figures", dynamics: "[data-learning-dynamics]",
   };
   const found = Object.fromEntries(Object.entries(required).map(([key, selector]) => [key, document.querySelector(selector)]));
   const missing = Object.keys(required).filter(key => !found[key]).map(key => required[key]);
@@ -63,6 +61,7 @@ const MEASURE = `(() => {
     headerPosition: getComputedStyle(header).position,
     profile: box(found.profile),
     aboutHeading: box(found.aboutHeading),
+    aboutBody: box(found.aboutBody),
     aboutText: box(found.aboutText),
     figures: box(found.figures),
     simplex: box(document.querySelector(".simplex")),
@@ -253,10 +252,9 @@ async function checkDesktop(cdp) {
   check("About is highlighted at the top of the page", top.active === "About", `active ${top.active}`);
   check("learning-dynamics figure is drawn", top.dynamicsHidden === false && top.simplexPoints > 100,
     `hidden ${top.dynamicsHidden}, ${top.simplexPoints} points`);
-  check("figure column starts level with the About heading",
-    top.simplex !== null && top.simplex.top >= top.aboutHeading.top
-      && top.simplex.top - top.aboutHeading.top <= FIGURE_ALIGN_MAX,
-    `figure ${top.simplex?.top}, heading ${top.aboutHeading.top}`);
+  const middle = box => (box.top + box.bottom) / 2;
+  check("figure column is centered vertically on the About section", near(middle(top.figures), middle(top.aboutBody)),
+    `figures ${middle(top.figures)}, section ${middle(top.aboutBody)}`);
   check("figures sit beside the bio", top.figures.left > top.aboutText.right,
     `figures ${top.figures.left}, text ${top.aboutText.right}`);
   check("no horizontal overflow on desktop", top.pageWidth <= top.viewport.width, `page ${top.pageWidth}px`);

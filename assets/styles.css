@@ -11,6 +11,8 @@
   --color-rule: #263d31;
   --color-wash: #101f18;
   --content-width: 1056px;
+  /* Width of the About figure column and its simplex. */
+  --figure-width: 260px;
   --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   --font-heading: Georgia, "Times New Roman", serif;
   /* Header heights; assets/tree-nav.js measures the real values. These hold until it runs, or without JavaScript. */
@@ -193,19 +195,19 @@ h3 { font-size: 1.03rem; font-weight: 600; line-height: 1.5; }
 main { min-width: 0; overflow-wrap: anywhere; }
 .content-section { margin-bottom: 3.1rem; scroll-margin-top: 2rem; }
 
-/* About: the heading and bio on the left; the figures in their own column, its top level with the heading. */
+/* About: the heading and bio on the left; the figures in their own column, centered vertically on the section. */
 .about-section { margin-bottom: 2.5rem; }
 .about-body { display: flex; align-items: flex-start; gap: 2.4rem; }
 .about-main { flex: 1; min-width: 0; }
 .about-main p { line-height: 1.85; text-wrap: pretty; }
 .about-main p:last-child { margin-bottom: 0; }
-.about-figures { flex: 0 0 200px; margin-top: 0.45rem; }
+.about-figures { flex: 0 0 var(--figure-width); align-self: center; }
 .about-figures > * + * { margin-top: 1.6rem; }
 
 /* Learning dynamics: replicator path on the strategy simplex, drawn by assets/learning-dynamics.js. */
 .dynamics-figure { margin: 0; }
 .figure-caption { margin: 0.35rem 0 0; color: var(--color-muted); font-size: 0.75rem; line-height: 1.5; }
-.simplex { display: block; width: 100%; max-width: 200px; height: auto; overflow: visible; }
+.simplex { display: block; width: 100%; max-width: var(--figure-width); height: auto; overflow: visible; }
 .simplex-edge { fill: none; stroke: var(--color-edge); stroke-width: 1; }
 .simplex-vertex { fill: var(--color-muted); font: italic 10px var(--font-heading); }
 .simplex-path {
@@ -241,7 +243,7 @@ main { min-width: 0; overflow-wrap: anywhere; }
 .paper-list p { margin: 0; }
 .paper-title { font-size: 1.0625rem; font-weight: 600; line-height: 1.45; }
 .paper-authors { margin-top: 0.3rem; color: var(--color-muted); font-size: 0.9375rem; }
-.paper-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 1.1rem; margin-top: 0.2rem; font-size: 0.875rem; }
+.paper-meta { margin-top: 0.2rem; font-size: 0.875rem; }
 .paper-venue { color: var(--color-accent); }
 
 .honors-list { margin: 0; padding: 0; list-style: none; }
