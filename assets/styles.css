@@ -1,14 +1,14 @@
 :root {
   color-scheme: dark;
   --color-background: #08130f;
-  --color-text: #e6eee8;
-  --color-muted: #a6b9ae;
-  --color-accent: #b7cfb5;
-  --color-accent-hover: #e1efdf;
-  --color-accent-soft: #88a88b;
-  --color-edge: #526c5d;
-  --color-node: #8da497;
-  --color-rule: #263d31;
+  --color-text: #f3f7f4;
+  --color-muted: #d0dcd4;
+  --color-accent: #cde6c9;
+  --color-accent-hover: #ecf7ea;
+  --color-accent-soft: #a3c4a5;
+  --color-edge: #6f8f7c;
+  --color-node: #adc4b6;
+  --color-rule: #32503f;
   --color-wash: #101f18;
   --content-width: 1056px;
   --sidebar-width: 252px;
@@ -24,8 +24,8 @@
 
 * { box-sizing: border-box; }
 
-/* Base text size; every rem in this file scales with it. 112.5% is 18px at the browser default of 16px. */
-html { font-size: 112.5%; scroll-padding-top: calc(var(--header-h) + 1.5rem); }
+/* Base text size; every rem in this file scales with it. 125% is 20px at the browser default of 16px. */
+html { font-size: 125%; scroll-padding-top: calc(var(--header-h) + 1.5rem); }
 
 body {
   margin: 0;
@@ -275,8 +275,8 @@ main { min-width: 0; overflow-wrap: anywhere; }
 }
 
 /* Windows too short for the whole sidebar, including the learning-dynamics figure, let it scroll with the page
-   instead of staying put. Its stuck bottom edge sits near 1091px. */
-@media (min-width: 661px) and (max-height: 1110px) {
+   instead of staying put. Its stuck bottom edge sits near 1255px. */
+@media (min-width: 661px) and (max-height: 1275px) {
   .profile { position: static; }
 }
 

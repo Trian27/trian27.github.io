@@ -20,7 +20,7 @@ Visit `http://127.0.0.1:8000/`. Stop the server with Ctrl+C.
 
 All text on the page is in `index.html`, in page order:
 
-- Sidebar (`<aside class="profile">`): name, field, affiliation, contact links, research interests, and the learning-dynamics figure with its caption. It stays in view on windows taller than 1110px and scrolls with the page on shorter ones; phones show the research interests and the figure under the profile, with the figure capped at its desktop size.
+- Sidebar (`<aside class="profile">`): name, field, affiliation, contact links, research interests, and the learning-dynamics figure with its caption. It stays in view on windows taller than 1275px and scrolls with the page on shorter ones; phones show the research interests and the figure under the profile, with the figure capped at its desktop size.
 - About (`id="about"`): the bio.
 - Recent updates: one `<li>` per update, newest first, with a `<time datetime="YYYY-MM">` date.
 - Research (`id="research"`): Ongoing work (project, then "with" and names), Papers (title, authors, venue, and a "Paper" link to arXiv or a locally hosted PDF), and Technical reports (the RUFL competition report: its result and poster venue, then Report, Slides, and Video presentation links). Each entry's links sit on their own line under the venue, separated by " · ".
@@ -50,7 +50,7 @@ Create the project environment once with `uv venv --no-python-downloads .venv`; 
 node scripts/check_layout.mjs            # layout and behavior in headless Chrome
 ```
 
-The layout check needs Node 20.12 or newer and a local Chrome. Copy `.env.example` to `.env` and set `CHROME_PATH`. It verifies the tree geometry (root under the gap in the name, outer labels flush with the rule), section highlighting and the header fold, that the sidebar scrolls with the page in 900px and 720px tall windows and stays in view in an 1150px one, the sidebar figure's placement, the phone layout, and the page with JavaScript disabled.
+The layout check needs Node 20.12 or newer and a local Chrome. Copy `.env.example` to `.env` and set `CHROME_PATH`. It verifies the tree geometry (root under the gap in the name, outer labels flush with the rule), section highlighting and the header fold, that the sidebar scrolls with the page in 900px and 720px tall windows and stays in view in a 1320px one, the sidebar figure's placement, the phone layout, and the page with JavaScript disabled.
 
 ## Publish updates
 
