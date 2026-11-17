@@ -23,7 +23,7 @@ All text on the page is in `index.html`, in page order:
 - Sidebar (`<aside class="profile">`): name, field, affiliation, contact links, research interests.
 - About (`id="about"`): the bio and the learning-dynamics caption.
 - Recent updates: one `<li>` per update, newest first, with a `<time datetime="YYYY-MM">` date.
-- Research (`id="research"`): Ongoing work (project, then "with" and names) and Papers (title, authors, venue, and an arXiv link or a locally hosted PDF).
+- Research (`id="research"`): Ongoing work (project, then "with" and names), Papers (title, authors, venue, and a "Paper" link to arXiv or a locally hosted PDF), and Technical reports (the RUFL competition report, worded as on the CV, with Report, Slides, and Video presentation links).
 - Selected honors and awards (`id="honors"`) and Community (`id="community"`).
 
 Text still to be supplied is wrapped in `<span class="fill-in">…</span>`, which shows a dashed outline. Replace the whole span with the real text or link. `python3 scripts/check_site.py` lists what is left.
@@ -37,7 +37,7 @@ Other files:
 - `assets/anl2025-rufl-slides.pdf`: PDF export of the ANL 2025 RUFL talk slides (the same deck ANAC hosts as `.pptx`), so the CV can link slides that open in a browser.
 - `assets/scalable-opponent-strategy-estimation.pdf`: non-anonymous preprint of the TheWebConf 2027 submission, hosted here until it is on arXiv. It is built locally from the Overleaf source with `nonacm` and author affiliations; overwrite this file to update it, and replace the link with arXiv once posted.
 
-The site uses system fonts and no analytics or external runtime dependencies. JavaScript only enhances the page: without it, every link and all text still work, the tree's edges are not drawn, and the learning-dynamics figure stays hidden. Research summaries and dates come from the supplied résumé. Public GitHub links were checked against [Trian27](https://github.com/Trian27); negotiation links come from the reference homepage. The robotics project is described as **submitted to ICRA 2027**, without claiming acceptance.
+The site uses system fonts and no analytics or external runtime dependencies. JavaScript only enhances the page: without it, every link and all text still work, the tree's edges are not drawn, and the learning-dynamics figure stays hidden. Research summaries and dates come from the supplied résumé. Public GitHub links were checked against [Trian27](https://github.com/Trian27); negotiation links come from the reference homepage. Both papers are described as **under review** (TheWebConf 2027, ICRA 2027), matching the CV, without claiming acceptance.
 
 ## Validate
 
